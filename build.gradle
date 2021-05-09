@@ -1,0 +1,64 @@
+apply plugin: 'java'
+apply plugin: 'eclipse-wtp'
+apply plugin: 'war'
+
+group = 'com.ubuntu'
+version = '1.0.0-BUILD-SNAPSHOT'
+
+description = """test"""
+
+sourceCompatibility = 1.6
+targetCompatibility = 1.6
+
+compileJava.options.encoding = 'UTF-8'
+
+eclipse {
+	project.natures "org.springsource.ide.eclipse.gradle.core.nature"
+ 	wtp {
+  		facet {
+   			facet name: 'jst.web', version: '3.0' // Servlet Spec Version 지정, 미 지정시 2.4
+   			facet name: 'jst.java', version: '1.6' // Java Version 지정
+  		}
+	}
+}
+
+repositories {
+        
+     maven { url "https://repo.maven.apache.org/maven2" }
+}
+dependencies {
+    compile(group: 'org.springframework', name: 'spring-context', version:'3.2.9.RELEASE') {
+exclude(module: 'commons-logging')
+    }
+    compile group: 'org.springframework', name: 'spring-web', version:'3.2.9.RELEASE'
+    compile group: 'org.springframework', name: 'spring-webmvc', version:'3.2.9.RELEASE'
+    compile group: 'org.aspectj', name: 'aspectjrt', version:'1.6.10'
+    compile group: 'org.slf4j', name: 'slf4j-api', version:'1.6.6'
+    compile group: 'javax.inject', name: 'javax.inject', version:'1'
+    compile group: 'javax.servlet', name: 'jstl', version:'1.2'
+    runtime group: 'org.slf4j', name: 'jcl-over-slf4j', version:'1.6.6'
+    runtime group: 'org.slf4j', name: 'slf4j-log4j12', version:'1.6.6'
+    runtime(group: 'log4j', name: 'log4j', version:'1.2.15') {
+		exclude(module: 'mail')
+		exclude(module: 'jms')
+		exclude(module: 'jmxtools')
+		exclude(module: 'jmxri')
+    }
+    testCompile group: 'junit', name: 'junit', version:'4.7'
+    // https://mvnrepository.com/artifact/org.postgresql/postgresql
+	compile group: 'org.postgresql', name: 'postgresql', version: '42.2.20.jre6'
+    // https://mvnrepository.com/artifact/org.springframework/spring-orm
+	compile group: 'org.springframework', name: 'spring-orm', version: '3.2.9.RELEASE'
+	// https://mvnrepository.com/artifact/org.springframework/spring-jdbc
+	compile group: 'org.springframework', name: 'spring-jdbc', version: '3.2.9.RELEASE'  
+	// https://mvnrepository.com/artifact/commons-dbcp/commons-dbcp
+	compile group: 'commons-dbcp', name: 'commons-dbcp', version: '1.4'
+	// https://mvnrepository.com/artifact/org.apache.commons/commons-pool2
+	compile group: 'org.apache.commons', name: 'commons-pool2', version: '2.0'
+	
+	  
+}
+war {
+    archiveName 'api.war'
+    from 'webapp' // adds a file-set to the root of the archive
+}
